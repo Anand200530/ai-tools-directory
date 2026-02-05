@@ -396,7 +396,6 @@ const categories = [
 // Search state
 let searchTimeout = null;
 let selectedSuggestionIndex = -1;
-let currentSuggestions = [];
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
@@ -412,6 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Render categories
 function renderCategories() {
     const grid = document.getElementById('categoryGrid');
+    if (!grid) return;
     grid.innerHTML = categories.map(cat => `
         <a href="#" class="category-card" onclick="filterByCategory('${cat.key}'); return false;">
             <div class="category-icon">${cat.icon}</div>
@@ -424,6 +424,7 @@ function renderCategories() {
 // Render featured tools
 function renderFeaturedTools() {
     const grid = document.getElementById('featuredTools');
+    if (!grid) return;
     const featured = tools.filter(t => t.featured);
     grid.innerHTML = featured.map(tool => renderToolCard(tool)).join('');
 }
@@ -431,6 +432,7 @@ function renderFeaturedTools() {
 // Render all tools
 function renderAllTools(category = 'all') {
     const grid = document.getElementById('allTools');
+    if (!grid) return;
     let filtered = tools;
     if (category !== 'all') {
         filtered = tools.filter(t => t.category === category);
@@ -441,6 +443,7 @@ function renderAllTools(category = 'all') {
 // Render new tools
 function renderNewTools() {
     const grid = document.getElementById('newTools');
+    if (!grid) return;
     const newTools = tools.filter(t => t.new);
     grid.innerHTML = newTools.length > 0 
         ? newTools.map(tool => renderToolCard(tool)).join('')
@@ -493,6 +496,8 @@ function filterByCategory(category) {
 function initSearch() {
     const searchInput = document.getElementById('searchInput');
     const suggestionsBox = document.getElementById('searchSuggestions');
+    
+    if (!searchInput || !suggestionsBox) return;
     
     // Input event
     searchInput.addEventListener('input', function(e) {
@@ -579,6 +584,8 @@ function findTools(query) {
 // Show suggestions dropdown
 function showSuggestions(matches, query) {
     const suggestionsBox = document.getElementById('searchSuggestions');
+    if (!suggestionsBox) return;
+    
     selectedSuggestionIndex = -1;
     
     if (matches.length === 0) {
@@ -641,6 +648,8 @@ function updateSelection(suggestions) {
 // Search and display results
 function searchAndDisplay(query) {
     const grid = document.getElementById('allTools');
+    if (!grid) return;
+    
     const lowerQuery = query.toLowerCase();
     
     const filtered = tools.filter(tool => 
@@ -660,7 +669,8 @@ function searchAndDisplay(query) {
 
 // Clear search
 function clearSearch() {
-    document.getElementById('searchInput').value = '';
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.value = '';
     renderAllTools();
 }
 
@@ -680,172 +690,25 @@ function initModal() {
     const modal = document.getElementById('toolModal');
     const closeBtn = document.querySelector('.close-btn');
     
-    closeBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
-    
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
             modal.classList.remove('active');
-        }
-    });
-    
-    // Close on escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            modal.classList.remove('active');
-        }
-    });
-}
-
-// Show tool detail
-function showToolDetail(id) {
-    const tool = tools.find(t => t.id === id);
-    if (!tool) return;
-    
-    const modal = document.getElementById('modalBody');
-    const pricingClass = tool.pricing === 'Free' ? '' : (tool.pricing === 'Paid' ? 'paid' : '');
-    
-    modal.innerHTML = `
-        <div class="modal-tool-header">
-            <div class="tool-icon" style="width: 72px; height: 72px; font-size: 2rem;">${tool.icon}</div>
-            <div class="modal-tool-info">
-                <div class="modal-tool-name">${tool.name}</div>
-                <div class="modal-tool-category">${getCategoryName(tool.category)}</div>
-            </div>
-        </div>
-        <div class="modal-tool-body">
-            <p class="modal-tool-description">${tool.description}</p>
-            <div class="modal-tool-features">
-                <h4>Key Features</h4>
-                <ul>
-                    ${tool.features.map(f => `<li>${f}</li>`).join('')}
-                </ul>
-            </div>
-            <div class="modal-tool-actions">
-                <a href="${tool.url}" target="_blank" class="modal-btn primary">Visit Website</a>
-                <button class="modal-btn secondary" onclick="copyToolInfo(${tool.id})">Save Info</button>
-            </div>
-        </div>
-    `;
-    
-    document.getElementById('toolModal').classList.add('active');
-}
-
-// Copy tool info (placeholder)
-function copyToolInfo(id) {
-    const tool = tools.find(t => t.id === id);
-    if (!tool) return;
-    
-    // Copy to clipboard
-    const text = `${tool.name}\n\n${tool.description}\n\nFeatures:\n${tool.features.map(f => '• ' + f).join('\n')}\n\n${tool.url}`;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        alert('Tool info copied to clipboard!');
-    }).catch(() => {
-        alert('Could not copy to clipboard');
-    });
-}
-tool-name">${tool.name}</div>
-                    <div class="tool-category">${getCategoryName(tool.category)}</div>
-                </div>
-            </div>
-            <div class="tool-body">
-                <p class="tool-description">${tool.description}</p>
-            </div>
-            <div class="tool-footer">
-                <span class="tool-pricing ${pricingClass}">${tool.pricing}</span>
-                <span class="tool-link">View →</span>
-            </div>
-        </div>
-    `;
-}
-
-// Get category display name
-function getCategoryName(key) {
-    const cat = categories.find(c => c.key === key);
-    return cat ? cat.name : key;
-}
-
-// Filter by category
-function filterByCategory(category) {
-    renderAllTools(category);
-    
-    // Update filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.category === category) {
-            btn.classList.add('active');
-        }
-    });
-}
-
-// Initialize search
-function initSearch() {
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-    
-    searchInput.addEventListener('input', function(e) {
-        const query = e.target.value.toLowerCase();
-        const grid = document.getElementById('allTools');
-        
-        if (query.length < 2) {
-            renderAllTools();
-            searchResults.style.display = 'none';
-            return;
-        }
-        
-        const filtered = tools.filter(tool => 
-            tool.name.toLowerCase().includes(query) ||
-            tool.description.toLowerCase().includes(query) ||
-            tool.category.toLowerCase().includes(query)
-        );
-        
-        grid.innerHTML = filtered.map(tool => renderToolCard(tool)).join('');
-        
-        // Show results count
-        searchResults.textContent = `${filtered.length} tool${filtered.length !== 1 ? 's' : ''} found`;
-        searchResults.style.display = 'block';
-    });
-    
-    // Hide results when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-            searchResults.style.display = 'none';
-        }
-    });
-}
-
-// Initialize filters
-function initFilters() {
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            renderAllTools(this.dataset.category);
         });
-    });
-}
-
-// Modal functionality
-function initModal() {
-    const modal = document.getElementById('toolModal');
-    const closeBtn = document.querySelector('.close-btn');
+    }
     
-    closeBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
-    
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    }
     
     // Close on escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            modal.classList.remove('active');
+            const modal = document.getElementById('toolModal');
+            if (modal) modal.classList.remove('active');
         }
     });
 }
@@ -855,10 +718,14 @@ function showToolDetail(id) {
     const tool = tools.find(t => t.id === id);
     if (!tool) return;
     
-    const modal = document.getElementById('modalBody');
+    const modal = document.getElementById('toolModal');
+    const modalBody = document.getElementById('modalBody');
+    
+    if (!modal || !modalBody) return;
+    
     const pricingClass = tool.pricing === 'Free' ? '' : (tool.pricing === 'Paid' ? 'paid' : '');
     
-    modal.innerHTML = `
+    modalBody.innerHTML = `
         <div class="modal-tool-header">
             <div class="tool-icon" style="width: 72px; height: 72px; font-size: 2rem;">${tool.icon}</div>
             <div class="modal-tool-info">
@@ -881,15 +748,14 @@ function showToolDetail(id) {
         </div>
     `;
     
-    document.getElementById('toolModal').classList.add('active');
+    modal.classList.add('active');
 }
 
-// Copy tool info (placeholder)
+// Copy tool info
 function copyToolInfo(id) {
     const tool = tools.find(t => t.id === id);
     if (!tool) return;
     
-    // Copy to clipboard
     const text = `${tool.name}\n\n${tool.description}\n\nFeatures:\n${tool.features.map(f => '• ' + f).join('\n')}\n\n${tool.url}`;
     
     navigator.clipboard.writeText(text).then(() => {
