@@ -422,7 +422,7 @@ function renderCategories() {
     const grid = document.getElementById('categoryGrid');
     if (!grid) return;
     grid.innerHTML = categories.map(cat => `
-        <a href="#" class="category-card" onclick="filterByCategory('${cat.key}'); return false;">
+        <a href="#all-tools" class="category-card" onclick="filterByCategory('${cat.key}'); scrollToTools(); return false;">
             <div class="category-icon">${cat.icon}</div>
             <div class="category-name">${cat.name}</div>
             <div class="category-count">${cat.count} tools</div>
@@ -499,6 +499,23 @@ function filterByCategory(category) {
             btn.classList.add('active');
         }
     });
+}
+
+// Scroll to tools section
+function scrollToTools() {
+    const allToolsSection = document.querySelector('.all-tools');
+    if (allToolsSection) {
+        allToolsSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// Filter tools and scroll
+function filterTools(category) {
+    filterByCategory(category);
+    scrollToTools();
 }
 
 // Initialize search with suggestions
@@ -689,7 +706,9 @@ function initFilters() {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            renderAllTools(this.dataset.category);
+            const category = this.dataset.category;
+            renderAllTools(category);
+            scrollToTools();
         });
     });
 }
