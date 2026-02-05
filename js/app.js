@@ -239,7 +239,7 @@ const tools = [
             "Automatic transcription",
             "Screen recording",
             "AI voice cloning",
-            " overdub"
+            "Overdub"
         ],
         url: "https://descript.com"
     },
@@ -393,6 +393,11 @@ const categories = [
     { name: "Coding", icon: "💻", count: 3, key: "coding" }
 ];
 
+// Search state
+let searchTimeout = null;
+let selectedSuggestionIndex = -1;
+let currentSuggestions = [];
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
     renderCategories();
@@ -451,6 +456,297 @@ function renderToolCard(tool) {
                 <div class="tool-icon">${tool.icon}</div>
                 <div class="tool-info">
                     <div class="tool-name">${tool.name}</div>
+                    <div class="tool-category">${getCategoryName(tool.category)}</div>
+                </div>
+            </div>
+            <div class="tool-body">
+                <p class="tool-description">${tool.description}</p>
+            </div>
+            <div class="tool-footer">
+                <span class="tool-pricing ${pricingClass}">${tool.pricing}</span>
+                <span class="tool-link">View →</span>
+            </div>
+        </div>
+    `;
+}
+
+// Get category display name
+function getCategoryName(key) {
+    const cat = categories.find(c => c.key === key);
+    return cat ? cat.name : key;
+}
+
+// Filter by category
+function filterByCategory(category) {
+    renderAllTools(category);
+    
+    // Update filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.category === category) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+// Initialize search with suggestions
+function initSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    
+    // Input event
+    searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.trim();
+        
+        clearTimeout(searchTimeout);
+        
+        if (query.length === 0) {
+            suggestionsBox.classList.remove('active');
+            renderAllTools();
+            return;
+        }
+        
+        // Debounce search
+        searchTimeout = setTimeout(() => {
+            const matches = findTools(query);
+            showSuggestions(matches, query);
+        }, 150);
+    });
+    
+    // Keyboard navigation
+    searchInput.addEventListener('keydown', function(e) {
+        const suggestions = suggestionsBox.querySelectorAll('.search-suggestion-item');
+        
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, suggestions.length - 1);
+            updateSelection(suggestions);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, 0);
+            updateSelection(suggestions);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
+                const toolId = parseInt(suggestions[selectedSuggestionIndex].dataset.id);
+                const tool = tools.find(t => t.id === toolId);
+                if (tool) {
+                    searchInput.value = tool.name;
+                    suggestionsBox.classList.remove('active');
+                    showToolDetail(tool.id);
+                }
+            } else {
+                // Search with current query
+                const query = searchInput.value.trim();
+                if (query.length >= 2) {
+                    searchAndDisplay(query);
+                }
+            }
+        } else if (e.key === 'Escape') {
+            suggestionsBox.classList.remove('active');
+        }
+    });
+    
+    // Focus handler
+    searchInput.addEventListener('focus', function() {
+        const query = searchInput.value.trim();
+        if (query.length >= 2) {
+            const matches = findTools(query);
+            if (matches.length > 0) {
+                showSuggestions(matches, query);
+            }
+        }
+    });
+    
+    // Click outside to close
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+            suggestionsBox.classList.remove('active');
+        }
+    });
+}
+
+// Find tools matching query
+function findTools(query) {
+    const lowerQuery = query.toLowerCase();
+    return tools.filter(tool => 
+        tool.name.toLowerCase().includes(lowerQuery) ||
+        tool.description.toLowerCase().includes(lowerQuery) ||
+        tool.category.toLowerCase().includes(lowerQuery)
+    ).slice(0, 8); // Max 8 suggestions
+}
+
+// Show suggestions dropdown
+function showSuggestions(matches, query) {
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    selectedSuggestionIndex = -1;
+    
+    if (matches.length === 0) {
+        suggestionsBox.innerHTML = `
+            <div class="search-no-results">
+                No tools found for "${query}"
+            </div>
+        `;
+    } else {
+        suggestionsBox.innerHTML = matches.map((tool, index) => `
+            <div class="search-suggestion-item" data-id="${tool.id}" data-index="${index}">
+                <span class="search-suggestion-icon">${tool.icon}</span>
+                <div class="search-suggestion-info">
+                    <div class="search-suggestion-name">${highlightMatch(tool.name, query)}</div>
+                    <div class="search-suggestion-category">${getCategoryName(tool.category)}</div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Add click handlers
+        suggestionsBox.querySelectorAll('.search-suggestion-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const toolId = parseInt(this.dataset.id);
+                const tool = tools.find(t => t.id === toolId);
+                if (tool) {
+                    document.getElementById('searchInput').value = tool.name;
+                    suggestionsBox.classList.remove('active');
+                    showToolDetail(tool.id);
+                }
+            });
+            
+            item.addEventListener('mouseenter', function() {
+                selectedSuggestionIndex = parseInt(this.dataset.index);
+                updateSelection(suggestionsBox.querySelectorAll('.search-suggestion-item'));
+            });
+        });
+    }
+    
+    suggestionsBox.classList.add('active');
+}
+
+// Highlight matching text
+function highlightMatch(text, query) {
+    const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+    return text.replace(regex, '<strong>$1</strong>');
+}
+
+// Escape regex special characters
+function escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Update visual selection
+function updateSelection(suggestions) {
+    suggestions.forEach((item, index) => {
+        item.classList.toggle('selected', index === selectedSuggestionIndex);
+    });
+}
+
+// Search and display results
+function searchAndDisplay(query) {
+    const grid = document.getElementById('allTools');
+    const lowerQuery = query.toLowerCase();
+    
+    const filtered = tools.filter(tool => 
+        tool.name.toLowerCase().includes(lowerQuery) ||
+        tool.description.toLowerCase().includes(lowerQuery) ||
+        tool.category.toLowerCase().includes(lowerQuery)
+    );
+    
+    grid.innerHTML = `
+        <div class="search-results-info">
+            Found ${filtered.length} tool${filtered.length !== 1 ? 's' : ''} for "${query}"
+            <button onclick="clearSearch()" style="float: right; background: none; border: none; color: #2563eb; cursor: pointer;">Clear search ✕</button>
+        </div>
+        ${filtered.length > 0 ? filtered.map(tool => renderToolCard(tool)).join('') : '<p style="padding: 20px; color: #64748b;">No tools found. Try a different search term.</p>'}
+    `;
+}
+
+// Clear search
+function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    renderAllTools();
+}
+
+// Initialize filters
+function initFilters() {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            renderAllTools(this.dataset.category);
+        });
+    });
+}
+
+// Modal functionality
+function initModal() {
+    const modal = document.getElementById('toolModal');
+    const closeBtn = document.querySelector('.close-btn');
+    
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            modal.classList.remove('active');
+        }
+    });
+}
+
+// Show tool detail
+function showToolDetail(id) {
+    const tool = tools.find(t => t.id === id);
+    if (!tool) return;
+    
+    const modal = document.getElementById('modalBody');
+    const pricingClass = tool.pricing === 'Free' ? '' : (tool.pricing === 'Paid' ? 'paid' : '');
+    
+    modal.innerHTML = `
+        <div class="modal-tool-header">
+            <div class="tool-icon" style="width: 72px; height: 72px; font-size: 2rem;">${tool.icon}</div>
+            <div class="modal-tool-info">
+                <div class="modal-tool-name">${tool.name}</div>
+                <div class="modal-tool-category">${getCategoryName(tool.category)}</div>
+            </div>
+        </div>
+        <div class="modal-tool-body">
+            <p class="modal-tool-description">${tool.description}</p>
+            <div class="modal-tool-features">
+                <h4>Key Features</h4>
+                <ul>
+                    ${tool.features.map(f => `<li>${f}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="modal-tool-actions">
+                <a href="${tool.url}" target="_blank" class="modal-btn primary">Visit Website</a>
+                <button class="modal-btn secondary" onclick="copyToolInfo(${tool.id})">Save Info</button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('toolModal').classList.add('active');
+}
+
+// Copy tool info (placeholder)
+function copyToolInfo(id) {
+    const tool = tools.find(t => t.id === id);
+    if (!tool) return;
+    
+    // Copy to clipboard
+    const text = `${tool.name}\n\n${tool.description}\n\nFeatures:\n${tool.features.map(f => '• ' + f).join('\n')}\n\n${tool.url}`;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Tool info copied to clipboard!');
+    }).catch(() => {
+        alert('Could not copy to clipboard');
+    });
+}
+tool-name">${tool.name}</div>
                     <div class="tool-category">${getCategoryName(tool.category)}</div>
                 </div>
             </div>
