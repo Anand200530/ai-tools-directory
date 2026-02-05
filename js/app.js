@@ -32,15 +32,33 @@ const categories = [
 ];
 
 function renderCategories() {
-    const grid = document.getElementById('categoryGrid');
+    var grid = document.getElementById('categoryGrid');
     if (!grid) return;
     grid.innerHTML = categories.map(function(cat) {
         return '<div class="category-card" onclick="filterAndScroll(\'' + cat.key + '\')"><div class="category-icon">' + cat.icon + '</div><div class="category-name">' + cat.name + '</div><div class="category-count">' + cat.count + ' tools</div></div>';
     }).join('');
 }
 
+function renderToolCard(tool) {
+    return '<div class="tool-card" onclick="openTool(\'' + tool.url + '\')"><div class="tool-header"><div class="tool-icon">' + tool.icon + '</div><div class="tool-info"><div class="tool-name">' + tool.name + '</div><div class="tool-category">' + getCategoryName(tool.category) + '</div></div></div><div class="tool-body"><p class="tool-description">' + tool.description + '</p></div><div class="tool-footer"><span class="tool-pricing">' + tool.pricing + '</span><span class="tool-link">Visit →</span></div></div>';
+}
+
+function renderFeatured() {
+    var grid = document.getElementById('featuredTools');
+    if (!grid) return;
+    var featured = tools.filter(function(t) { return t.featured; });
+    grid.innerHTML = featured.map(renderToolCard).join('');
+}
+
+function renderNew() {
+    var grid = document.getElementById('newTools');
+    if (!grid) return;
+    var newTools = tools.slice(0, 4);
+    grid.innerHTML = newTools.map(renderToolCard).join('');
+}
+
 function renderTools(filter) {
-    const grid = document.getElementById('allTools');
+    var grid = document.getElementById('allTools');
     if (!grid) return;
     
     var filtered = tools;
@@ -48,9 +66,7 @@ function renderTools(filter) {
         filtered = tools.filter(function(t) { return t.category === filter; });
     }
     
-    grid.innerHTML = filtered.map(function(tool) {
-        return '<div class="tool-card" onclick="openTool(\'' + tool.url + '\')"><div class="tool-header"><div class="tool-icon">' + tool.icon + '</div><div class="tool-info"><div class="tool-name">' + tool.name + '</div><div class="tool-category">' + getCategoryName(tool.category) + '</div></div></div><div class="tool-body"><p class="tool-description">' + tool.description + '</p></div><div class="tool-footer"><span class="tool-pricing">' + tool.pricing + '</span><span class="tool-link">Visit →</span></div></div>';
-    }).join('');
+    grid.innerHTML = filtered.map(renderToolCard).join('');
 }
 
 function getCategoryName(key) {
@@ -82,6 +98,8 @@ function openTool(url) {
 
 function init() {
     renderCategories();
+    renderFeatured();
+    renderNew();
     renderTools('all');
     
     document.querySelectorAll('.filter-btn').forEach(function(btn) {
