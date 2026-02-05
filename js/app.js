@@ -398,7 +398,14 @@ let searchTimeout = null;
 let selectedSuggestionIndex = -1;
 
 // Initialize the app
+console.log('AI Tools Hub: Loading...');
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('AI Tools Hub: DOM loaded');
+    console.log('Category grid exists:', !!document.getElementById('categoryGrid'));
+    console.log('Featured tools exists:', !!document.getElementById('featuredTools'));
+    console.log('All tools exists:', !!document.getElementById('allTools'));
+    
     renderCategories();
     renderFeaturedTools();
     renderAllTools();
@@ -406,6 +413,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initSearch();
     initFilters();
     initModal();
+    
+    console.log('AI Tools Hub: All functions called');
 });
 
 // Render categories
