@@ -503,12 +503,19 @@ function filterByCategory(category) {
 
 // Scroll to tools section
 function scrollToTools() {
+    console.log('scrollToTools called');
     const allToolsSection = document.querySelector('.all-tools');
+    console.log('Found element:', !!allToolsSection);
+    
     if (allToolsSection) {
-        allToolsSection.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
+        const offsetTop = allToolsSection.offsetTop - 100; // 100px above
+        console.log('Scrolling to:', offsetTop);
+        window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
         });
+    } else {
+        console.log('Element not found!');
     }
 }
 
@@ -704,11 +711,12 @@ function clearSearch() {
 function initFilters() {
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
+            console.log('Filter clicked:', this.dataset.category);
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             const category = this.dataset.category;
             renderAllTools(category);
-            scrollToTools();
+            setTimeout(() => scrollToTools(), 100);
         });
     });
 }
