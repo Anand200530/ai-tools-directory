@@ -422,7 +422,7 @@ function renderCategories() {
     const grid = document.getElementById('categoryGrid');
     if (!grid) return;
     grid.innerHTML = categories.map(cat => `
-        <a href="#all-tools" class="category-card" onclick="filterByCategory('${cat.key}'); scrollToTools(); return false;">
+        <a href="#all-tools" class="category-card" onclick="setTimeout(() => { const t = document.querySelector('#all-tools'); if(t){ const top = t.getBoundingClientRect().top + window.pageYOffset - 120; window.scrollTo({ top: top, behavior: 'smooth' }); } }, 100); filterByCategory('${cat.key}'); return false;">
             <div class="category-icon">${cat.icon}</div>
             <div class="category-name">${cat.name}</div>
             <div class="category-count">${cat.count} tools</div>
@@ -501,28 +501,17 @@ function filterByCategory(category) {
     });
 }
 
-// Scroll to tools section
-function scrollToTools() {
-    console.log('scrollToTools called');
-    const allToolsSection = document.querySelector('.all-tools');
-    console.log('Found element:', !!allToolsSection);
-    
-    if (allToolsSection) {
-        const offsetTop = allToolsSection.offsetTop - 100; // 100px above
-        console.log('Scrolling to:', offsetTop);
-        window.scrollTo({
-            top: offsetTop,
-            behavior: 'smooth'
-        });
-    } else {
-        console.log('Element not found!');
-    }
-}
-
 // Filter tools and scroll
-function filterTools(category) {
+function filterToolsWithScroll(category) {
     filterByCategory(category);
-    scrollToTools();
+    
+    setTimeout(() => {
+        const target = document.querySelector('#all-tools');
+        if (target) {
+            const top = target.getBoundingClientRect().top + window.pageYOffset - 120;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+    }, 200);
 }
 
 // Initialize search with suggestions
@@ -711,12 +700,17 @@ function clearSearch() {
 function initFilters() {
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            console.log('Filter clicked:', this.dataset.category);
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             const category = this.dataset.category;
             renderAllTools(category);
-            setTimeout(() => scrollToTools(), 100);
+            setTimeout(() => {
+                const target = document.querySelector('#all-tools');
+                if (target) {
+                    const top = target.getBoundingClientRect().top + window.pageYOffset - 120;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                }
+            }, 200);
         });
     });
 }
