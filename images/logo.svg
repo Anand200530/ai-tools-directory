@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background -->
+  <rect width="200" height="200" rx="40" fill="#2563eb"/>
+  
+  <!-- AI Text -->
+  <text x="100" y="85" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white" text-anchor="middle">AI</text>
+  
+  <!-- Robot face outline -->
+  <circle cx="60" cy="140" r="25" fill="none" stroke="white" stroke-width="4"/>
+  <circle cx="140" cy="140" r="25" fill="none" stroke="white" stroke-width="4"/>
+  <path d="M 50 160 Q 100 180 150 160" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Eyes -->
+  <circle cx="60" cy="140" r="8" fill="white"/>
+  <circle cx="140" cy="140" r="8" fill="white"/>
+  
+  <!-- Brain/Intelligence dots -->
+  <circle cx="100" cy="115" r="4" fill="#60a5fa"/>
+  <circle cx="90" cy="108" r="3" fill="#93c5fd"/>
+  <circle cx="110" cy="108" r="3" fill="#93c5fd"/>
+  <circle cx="85" cy="118" r="2" fill="#bfdbfe"/>
+  <circle cx="115" cy="118" r="2" fill="#bfdbfe"/>
+  
+  <!-- Antenna -->
+  <line x1="100" y1="60" x2="100" y2="45" stroke="white" stroke-width="3"/>
+  <circle cx="100" cy="40" r="6" fill="#10b981"/>
+</svg>
