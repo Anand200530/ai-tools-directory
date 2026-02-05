@@ -760,6 +760,22 @@ function showToolDetail(id) {
     modal.classList.add('active');
 }
 
+// Toggle FAQ item
+function toggleFaq(button) {
+    const faqItem = button.closest('.faq-item');
+    const wasActive = faqItem.classList.contains('active');
+    
+    // Close all other FAQ items
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Toggle current item
+    if (!wasActive) {
+        faqItem.classList.add('active');
+    }
+}
+
 // Copy tool info
 function copyToolInfo(id) {
     const tool = tools.find(t => t.id === id);

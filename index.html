@@ -80,7 +80,7 @@
             <nav class="nav">
                 <a href="#categories" class="nav-link">Categories</a>
                 <a href="#featured" class="nav-link">Featured</a>
-                <a href="#new" class="nav-link">New</a>
+                <a href="#faq" class="nav-link">FAQ</a>
                 <a href="#about" class="nav-link">About</a>
             </nav>
             <div class="search-box">
@@ -163,6 +163,95 @@
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">❓</span>
+                        <span class="faq-text">What are AI tools?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>AI (Artificial Intelligence) tools are software applications that use machine learning and advanced algorithms to perform tasks that typically require human intelligence. These include generating images, writing content, transcribing audio, coding assistance, and much more.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">💰</span>
+                        <span class="faq-text">Are these AI tools really free?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! All the tools listed on AI Tools Hub have free tiers or are completely free to use. Some offer premium features for a fee, but their core functionality is available at no cost. We clearly indicate the pricing model for each tool.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">🎨</span>
+                        <span class="faq-text">Can I use AI-generated images commercially?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>It depends on the tool. Some AI image generators like Midjourney and DALL-E grant you rights to use generated images commercially, while others may have restrictions. Always check the Terms of Service of each tool before commercial use.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">🔒</span>
+                        <span class="faq-text">Are AI tools safe to use?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, the tools listed on AI Tools Hub are from reputable companies and follow standard security practices. However, always be cautious about sharing sensitive personal information and review each tool's privacy policy before use.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">⚡</span>
+                        <span class="faq-text">How accurate are AI tools?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>AI tools have improved significantly and can achieve high accuracy in many tasks. However, they're not perfect. Always review and fact-check AI-generated content, especially for important decisions or professional use.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">🌐</span>
+                        <span class="faq-text">Do I need technical skills to use AI tools?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No! Most AI tools are designed to be user-friendly and require no technical skills. Simply type what you want in natural language, and the AI will help you accomplish your task.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">📱</span>
+                        <span class="faq-text">Can I use AI tools on my phone?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! Most AI tools have mobile-friendly websites or dedicated mobile apps. Many also work through messaging platforms like Telegram, Discord, or Slack where you can access them from your phone.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon">🔄</span>
+                        <span class="faq-text">How often is AI Tools Hub updated?</span>
+                        <span class="faq-arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We update AI Tools Hub regularly with new tools and the latest AI developments. Our team constantly researches and tests new AI tools to bring you the most current and useful resources.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
@@ -195,24 +284,23 @@
                 <div class="footer-links">
                     <div class="footer-column">
                         <h4>Categories</h4>
-                        <a href="#">Image Generation</a>
-                        <a href="#">Writing & Content</a>
-                        <a href="#">Video Production</a>
-                        <a href="#">Audio & Voice</a>
+                        <a href="#categories">Image Generation</a>
+                        <a href="#categories">Writing & Content</a>
+                        <a href="#categories">Video Production</a>
+                        <a href="#categories">Audio & Voice</a>
                     </div>
                     <div class="footer-column">
                         <h4>Resources</h4>
-                        <a href="#">Blog</a>
-                        <a href="#">How to Use</a>
-                        <a href="#">Best Practices</a>
-                        <a href="#">FAQ</a>
+                        <a href="#faq">FAQ</a>
+                        <a href="#about">How to Use</a>
+                        <a href="#about">Best Practices</a>
+                        <a href="#about">Contact</a>
                     </div>
                     <div class="footer-column">
                         <h4>Company</h4>
-                        <a href="#">About Us</a>
-                        <a href="#">Contact</a>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
+                        <a href="#about">About Us</a>
+                        <a href="#about">Privacy Policy</a>
+                        <a href="#about">Terms of Service</a>
                     </div>
                 </div>
             </div>
