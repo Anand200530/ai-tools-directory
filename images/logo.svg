@@ -1,27 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" fill="none">
   <!-- Background -->
-  <rect width="200" height="200" rx="40" fill="#2563eb"/>
+  <rect width="400" height="100" rx="16" fill="#1e293b"/>
   
-  <!-- AI Text -->
-  <text x="100" y="85" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white" text-anchor="middle">AI</text>
+  <!-- AI Icon - Brain with Circuit -->
+  <g transform="translate(20, 15)">
+    <!-- Brain shape -->
+    <path d="M30 35 C15 35 5 45 5 55 C5 65 15 70 25 70 C30 70 35 68 38 65 L38 75 C38 77 36 79 34 79 C28 79 22 75 18 68 C12 72 8 78 8 85 C8 92 15 98 25 98 C35 98 42 92 42 85 C42 78 38 72 33 68 L33 55 C33 45 40 35 55 35 C60 35 64 37 67 40 L67 30 C67 28 69 26 71 26 C75 26 78 30 78 34 L78 45 C78 52 75 58 70 62 C78 62 85 66 85 75 C85 84 78 90 68 90 C60 90 53 86 50 80 L50 88 C50 90 48 92 46 92 C42 92 40 88 40 84 L40 62 C32 58 27 50 27 40 C27 30 35 22 45 22 C52 22 58 25 62 30 L62 22 C62 20 64 18 66 18 C70 18 72 22 72 26 L72 35 C78 30 80 23 80 15 C80 7 73 0 65 0 C55 0 48 7 48 15 C48 22 52 28 58 31 L58 25 C58 23 60 21 62 21 C66 21 68 25 68 29 L68 40 C68 48 63 55 56 58 L56 48 C56 46 58 44 60 44 C64 44 66 48 66 52 L66 62 C66 64 64 66 62 66 C55 66 50 60 50 52 L50 40 C45 42 42 46 42 52 C42 58 46 62 50 62 L50 52 C50 50 52 48 54 48 C58 48 60 52 60 56 L60 75 C60 77 58 79 56 79 C52 79 50 75 50 71 L50 65 C45 68 42 74 42 80 C42 88 48 94 56 94 C64 94 70 88 70 80 L70 70 C70 68 72 66 74 66 C78 66 80 70 80 74 L80 85 C80 87 78 89 76 89 C72 89 68 85 68 79 L68 75 C68 70 62 68 56 68 C50 68 45 72 45 80 C45 88 52 94 62 94 C70 94 76 89 76 80 L76 65 C76 63 78 61 80 61 C84 61 86 65 86 69 L86 85 C86 87 84 89 82 89 C78 89 74 85 74 79 L74 55 C74 45 68 35 55 35 L55 35 Z" fill="#3b82f6" opacity="0.9"/>
+    <!-- Circuit dots -->
+    <circle cx="15" cy="25" r="4" fill="#10b981"/>
+    <circle cx="30" cy="15" r="3" fill="#f59e0b"/>
+    <circle cx="50" cy="20" r="3" fill="#10b981"/>
+    <circle cx="70" cy="15" r="4" fill="#f59e0b"/>
+    <circle cx="85" cy="30" r="3" fill="#10b981"/>
+  </g>
   
-  <!-- Robot face outline -->
-  <circle cx="60" cy="140" r="25" fill="none" stroke="white" stroke-width="4"/>
-  <circle cx="140" cy="140" r="25" fill="none" stroke="white" stroke-width="4"/>
-  <path d="M 50 160 Q 100 180 150 160" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
-  
-  <!-- Eyes -->
-  <circle cx="60" cy="140" r="8" fill="white"/>
-  <circle cx="140" cy="140" r="8" fill="white"/>
-  
-  <!-- Brain/Intelligence dots -->
-  <circle cx="100" cy="115" r="4" fill="#60a5fa"/>
-  <circle cx="90" cy="108" r="3" fill="#93c5fd"/>
-  <circle cx="110" cy="108" r="3" fill="#93c5fd"/>
-  <circle cx="85" cy="118" r="2" fill="#bfdbfe"/>
-  <circle cx="115" cy="118" r="2" fill="#bfdbfe"/>
-  
-  <!-- Antenna -->
-  <line x1="100" y1="60" x2="100" y2="45" stroke="white" stroke-width="3"/>
-  <circle cx="100" cy="40" r="6" fill="#10b981"/>
+  <!-- Text -->
+  <text x="110" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="700" fill="#f8fafc">AI Tools</text>
+  <text x="110" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="500" fill="#94a3b8">Hub</text>
 </svg>
