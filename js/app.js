@@ -188,57 +188,92 @@ function showToolModal(id) {
     else if (tool.category === 'no-code') gradientClass = 'gradient-nocode';
     
     // Pricing badge
-    var pricingBadge = '';
-    if (tool.pricing === 'Free') {
-        pricingBadge = '<span class="pricing-badge free">✓ Free</span>';
-    } else if (tool.pricing === 'Paid') {
-        pricingBadge = '<span class="pricing-badge paid">💳 Paid</span>';
-    } else {
-        pricingBadge = '<span class="pricing-badge freemium">★ Freemium</span>';
+    var pricingClass = 'pricing-free';
+    var pricingText = 'Free to Use';
+    if (tool.pricing === 'Paid') {
+        pricingClass = 'pricing-paid';
+        pricingText = 'Paid (Subscription)';
+    } else if (tool.pricing === 'Freemium') {
+        pricingClass = 'pricing-freemium';
+        pricingText = 'Freemium';
+    }
+    
+    // Generate features based on category
+    var features = [];
+    if (tool.category === 'image') {
+        features = ['Text-to-Image Generation', 'Multiple Art Styles', 'High-Resolution Output', 'Commercial Rights'];
+    } else if (tool.category === 'writing') {
+        features = ['AI-Powered Writing', 'Multiple Content Types', 'Grammar & Style Check', 'Fast Generation'];
+    } else if (tool.category === 'video') {
+        features = ['AI Video Creation', 'Templates Available', 'Voiceovers', 'Custom Branding'];
+    } else if (tool.category === 'audio') {
+        features = ['Voice Generation', 'Multi-Language Support', 'Emotion Control', 'Studio Quality'];
+    } else if (tool.category === 'coding') {
+        features = ['Code Completion', 'Bug Detection', 'Multiple Languages', 'Real-Time Suggestions'];
+    } else if (tool.category === 'design') {
+        features = ['AI Design Tools', 'Templates', 'Brand Kits', 'Export Options'];
+    } else if (tool.category === 'productivity') {
+        features = ['Task Automation', 'Collaboration', 'Integrations', 'Analytics'];
+    } else if (tool.category === 'research') {
+        features = ['Deep Research', 'Source Citation', 'Summarization', 'Multi-Source Search'];
+    } else if (tool.category === 'presentation') {
+        features = ['AI Slide Generation', 'Templates', 'Brand Matching', 'Export to PPTX'];
+    } else if (tool.category === 'meeting') {
+        features = ['Transcription', 'Action Items', 'Summaries', 'Searchable Records'];
+    } else if (tool.category === 'no-code') {
+        features = ['Visual Building', 'No Coding Required', 'Fast Deployment', 'Scalable'];
     }
     
     var html = '<div class="modal-hero ' + gradientClass + '">';
+    html += '<button class="modal-close" onclick="closeModal()">✕</button>';
     html += '<div class="modal-hero-content">';
-    html += '<span class="category-tag">' + categoryName + '</span>';
     html += '<div class="tool-icon-large">' + tool.icon + '</div>';
     html += '</div></div>';
     html += '<div class="modal-content-body">';
-    html += '<div class="modal-header-row">';
-    html += '<h2 class="modal-title">' + tool.name + '</h2>';
-    html += pricingBadge;
-    html += '</div>';
+    html += '<div class="modal-header">';
+    html += '<span class="category-badge">' + categoryName + '</span>';
+    html += '<h2 class="tool-title">' + tool.name + '</h2>';
+    html += '<div class="tool-meta">';
+    html += '<span class="meta-pill ' + pricingClass + '">' + pricingText + '</span>';
+    html += '<span class="meta-pill meta-web">🌐 Web-based</span>';
     if (tool.featured) {
-        html += '<div class="featured-badge">⭐ Featured Tool</div>';
+        html += '<span class="meta-pill meta-featured">⭐ Featured</span>';
     }
-    html += '<p class="modal-description">' + tool.description + '</p>';
-    html += '<div class="modal-details">';
-    html += '<div class="detail-card">';
-    html += '<div class="detail-icon">📁</div>';
-    html += '<div class="detail-info">';
-    html += '<span class="detail-label">Category</span>';
-    html += '<span class="detail-value">' + categoryName + '</span>';
     html += '</div></div>';
-    html += '<div class="detail-card">';
-    html += '<div class="detail-icon">💰</div>';
-    html += '<div class="detail-info">';
-    html += '<span class="detail-label">Pricing</span>';
-    html += '<span class="detail-value">' + tool.pricing + '</span>';
-    html += '</div></div>';
-    html += '<div class="detail-card">';
-    html += '<div class="detail-icon">🌐</div>';
-    html += '<div class="detail-info">';
-    html += '<span class="detail-label">Platform</span>';
-    html += '<span class="detail-value">Web-based</span>';
-    html += '</div></div>';
-    html += '<div class="detail-card">';
-    html += '<div class="detail-icon">⚡</div>';
-    html += '<div class="detail-info">';
-    html += '<span class="detail-label">Access</span>';
-    html += '<span class="detail-value">' + (tool.pricing === 'Free' ? 'Instant' : 'Sign-up Required') + '</span>';
-    html += '</div></div>';
+    html += '<div class="about-section">';
+    html += '<h3 class="section-title">About This Tool</h3>';
+    html += '<p class="about-text">' + tool.description + '</p>';
     html += '</div>';
-    html += '<div class="modal-actions">';
-    html += '<a href="' + tool.url + '" target="_blank" class="visit-btn">';
+    html += '<div class="features-section">';
+    html += '<h3 class="section-title">Key Features</h3>';
+    html += '<div class="features-grid">';
+    for (var i = 0; i < features.length; i++) {
+        html += '<div class="feature-item">';
+        html += '<span class="feature-check">✓</span>';
+        html += '<span>' + features[i] + '</span>';
+        html += '</div>';
+    }
+    html += '</div></div>';
+    html += '<div class="quick-info">';
+    html += '<div class="info-item">';
+    html += '<span class="info-label">Website</span>';
+    html += '<a href="' + tool.url + '" target="_blank" class="info-link">' + tool.name + '</a>';
+    html += '</div>';
+    html += '<div class="info-item">';
+    html += '<span class="info-label">Pricing</span>';
+    html += '<span class="info-value">' + tool.pricing + '</span>';
+    html += '</div>';
+    html += '<div class="info-item">';
+    html += '<span class="info-label">Category</span>';
+    html += '<span class="info-value">' + categoryName + '</span>';
+    html += '</div>';
+    html += '<div class="info-item">';
+    html += '<span class="info-label">Setup</span>';
+    html += '<span class="info-value">' + (tool.pricing === 'Free' ? 'Instant' : 'Account Required') + '</span>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="action-section">';
+    html += '<a href="' + tool.url + '" target="_blank" class="visit-button">';
     html += '<span>🚀</span> Visit Website';
     html += '</a>';
     html += '</div></div>';
@@ -253,12 +288,19 @@ function closeModal() {
 }
 
 // Close modal when clicking outside
-window.onclick = function(event) {
+document.addEventListener('click', function(event) {
     var modal = document.getElementById('toolModal');
     if (event.target === modal) {
         closeModal();
     }
-}
+});
+
+// Close on Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
 
 function renderFeatured() {
     var grid = document.getElementById('featuredTools');
@@ -471,12 +513,6 @@ function init() {
         btns[i].addEventListener('click', function() {
             filterAndScroll(this.dataset.category);
         });
-    }
-    
-    // Modal close button
-    var closeBtn = document.querySelector('.close-btn');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
     }
 }
 
