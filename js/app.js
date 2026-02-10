@@ -174,49 +174,71 @@ function showToolModal(id) {
     // Get category name
     var categoryName = getCategoryName(tool.category);
     
-    // Determine badge color
-    var badgeClass = 'badge-free';
-    if (tool.pricing === 'Paid') badgeClass = 'badge-paid';
-    else if (tool.pricing === 'Freemium') badgeClass = 'badge-freemium';
+    // Determine gradient based on category
+    var gradientClass = 'gradient-image';
+    if (tool.category === 'writing') gradientClass = 'gradient-writing';
+    else if (tool.category === 'video') gradientClass = 'gradient-video';
+    else if (tool.category === 'audio') gradientClass = 'gradient-audio';
+    else if (tool.category === 'coding') gradientClass = 'gradient-coding';
+    else if (tool.category === 'design') gradientClass = 'gradient-design';
+    else if (tool.category === 'productivity') gradientClass = 'gradient-productivity';
+    else if (tool.category === 'research') gradientClass = 'gradient-research';
+    else if (tool.category === 'presentation') gradientClass = 'gradient-presentation';
+    else if (tool.category === 'meeting') gradientClass = 'gradient-meeting';
+    else if (tool.category === 'no-code') gradientClass = 'gradient-nocode';
     
-    var html = '<div class="modal-tool-header">';
-    html += '<div class="modal-tool-icon">' + tool.icon + '</div>';
-    html += '<div class="modal-tool-info">';
-    html += '<div class="modal-tool-name">' + tool.name + '</div>';
-    html += '<div class="modal-tool-badges">';
-    html += '<span class="badge badge-category">' + categoryName + '</span>';
-    html += '<span class="badge ' + badgeClass + '">' + tool.pricing + '</span>';
-    if (tool.featured) {
-        html += '<span class="badge badge-featured">⭐ Featured</span>';
+    // Pricing badge
+    var pricingBadge = '';
+    if (tool.pricing === 'Free') {
+        pricingBadge = '<span class="pricing-badge free">✓ Free</span>';
+    } else if (tool.pricing === 'Paid') {
+        pricingBadge = '<span class="pricing-badge paid">💳 Paid</span>';
+    } else {
+        pricingBadge = '<span class="pricing-badge freemium">★ Freemium</span>';
     }
-    html += '</div></div></div>';
-    html += '<div class="modal-tool-body">';
-    html += '<div class="modal-section">';
-    html += '<h4 class="modal-section-title">About</h4>';
-    html += '<p class="modal-tool-description">' + tool.description + '</p>';
-    html += '</div>';
-    html += '<div class="modal-section">';
-    html += '<h4 class="modal-section-title">Quick Info</h4>';
-    html += '<div class="modal-info-grid">';
-    html += '<div class="modal-info-item">';
-    html += '<span class="info-label">Category</span>';
-    html += '<span class="info-value">' + categoryName + '</span>';
-    html += '</div>';
-    html += '<div class="modal-info-item">';
-    html += '<span class="info-label">Pricing</span>';
-    html += '<span class="info-value">' + tool.pricing + '</span>';
-    html += '</div>';
-    html += '<div class="modal-info-item">';
-    html += '<span class="info-label">Access</span>';
-    html += '<span class="info-value">' + (tool.pricing === 'Free' || tool.pricing === 'Freemium' ? 'Available' : 'Subscription') + '</span>';
-    html += '</div>';
-    html += '<div class="modal-info-item">';
-    html += '<span class="info-label">Platform</span>';
-    html += '<span class="info-value">Web-based</span>';
-    html += '</div>';
+    
+    var html = '<div class="modal-hero ' + gradientClass + '">';
+    html += '<div class="modal-hero-content">';
+    html += '<span class="category-tag">' + categoryName + '</span>';
+    html += '<div class="tool-icon-large">' + tool.icon + '</div>';
     html += '</div></div>';
-    html += '<div class="modal-tool-actions">';
-    html += '<a href="' + tool.url + '" target="_blank" class="modal-btn primary">';
+    html += '<div class="modal-content-body">';
+    html += '<div class="modal-header-row">';
+    html += '<h2 class="modal-title">' + tool.name + '</h2>';
+    html += pricingBadge;
+    html += '</div>';
+    if (tool.featured) {
+        html += '<div class="featured-badge">⭐ Featured Tool</div>';
+    }
+    html += '<p class="modal-description">' + tool.description + '</p>';
+    html += '<div class="modal-details">';
+    html += '<div class="detail-card">';
+    html += '<div class="detail-icon">📁</div>';
+    html += '<div class="detail-info">';
+    html += '<span class="detail-label">Category</span>';
+    html += '<span class="detail-value">' + categoryName + '</span>';
+    html += '</div></div>';
+    html += '<div class="detail-card">';
+    html += '<div class="detail-icon">💰</div>';
+    html += '<div class="detail-info">';
+    html += '<span class="detail-label">Pricing</span>';
+    html += '<span class="detail-value">' + tool.pricing + '</span>';
+    html += '</div></div>';
+    html += '<div class="detail-card">';
+    html += '<div class="detail-icon">🌐</div>';
+    html += '<div class="detail-info">';
+    html += '<span class="detail-label">Platform</span>';
+    html += '<span class="detail-value">Web-based</span>';
+    html += '</div></div>';
+    html += '<div class="detail-card">';
+    html += '<div class="detail-icon">⚡</div>';
+    html += '<div class="detail-info">';
+    html += '<span class="detail-label">Access</span>';
+    html += '<span class="detail-value">' + (tool.pricing === 'Free' ? 'Instant' : 'Sign-up Required') + '</span>';
+    html += '</div></div>';
+    html += '</div>';
+    html += '<div class="modal-actions">';
+    html += '<a href="' + tool.url + '" target="_blank" class="visit-btn">';
     html += '<span>🚀</span> Visit Website';
     html += '</a>';
     html += '</div></div>';
