@@ -845,3 +845,31 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* AdSense Slots */
+.adsense-slot {
+    margin: 40px auto;
+    text-align: center;
+}
+
+.ad-placeholder {
+    background: var(--surface);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius);
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.ad-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.ad-placeholder p {
+    font-size: 0.9375rem;
+}
