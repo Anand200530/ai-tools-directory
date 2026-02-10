@@ -96,17 +96,18 @@ body {
 
 .search-box {
     position: relative;
-    width: 320px;
+    width: 360px;
 }
 
 .search-input {
     width: 100%;
-    padding: 12px 16px 12px 44px;
+    padding: 14px 20px 14px 48px;
     border: 2px solid var(--border-color);
     border-radius: var(--radius);
     font-size: 1rem;
     background: var(--surface);
     transition: var(--transition);
+    font-weight: 500;
 }
 
 .search-input:focus {
@@ -114,14 +115,15 @@ body {
     border-color: var(--primary-color);
     background: var(--background);
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    transform: scale(1.02);
 }
 
 .search-icon {
     position: absolute;
-    left: 16px;
+    left: 18px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     pointer-events: none;
 }
 
@@ -215,6 +217,25 @@ body {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+.browse-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: var(--transition);
+}
+
+.browse-all-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
 .search-icon {
     position: absolute;
     left: 16px;
@@ -271,6 +292,45 @@ body {
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* Quick Browse Section */
+.quick-browse {
+    background: var(--surface);
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.quick-browse-text {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.quick-browse-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.quick-link {
+    padding: 10px 18px;
+    background: var(--background);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: var(--transition);
+}
+
+.quick-link:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
 }
 
 /* Section Titles */
