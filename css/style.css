@@ -101,7 +101,7 @@ body {
 
 .search-input {
     width: 100%;
-    padding: 14px 20px 14px 48px;
+    padding: 14px 60px 14px 48px;
     border: 2px solid var(--border-color);
     border-radius: var(--radius);
     font-size: 1rem;
@@ -125,6 +125,26 @@ body {
     transform: translateY(-50%);
     font-size: 1.2rem;
     pointer-events: none;
+}
+
+.search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.search-btn:hover {
+    background: var(--primary-hover);
 }
 
 .search-suggestions {

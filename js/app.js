@@ -232,6 +232,64 @@ function searchTools(query) {
     grid.innerHTML = html;
 }
 
+function showSuggestions(query) {
+    var suggestionsBox = document.getElementById('searchSuggestions');
+    if (!suggestionsBox) return;
+    
+    if (!query || query.length < 1) {
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.classList.remove('active');
+        return;
+    }
+    
+    var q = query.toLowerCase();
+    var results = [];
+    for (var i = 0; i < tools.length; i++) {
+        var t = tools[i];
+        if (t.name.toLowerCase().indexOf(q) !== -1) {
+            results.push(t);
+        }
+    }
+    
+    var html = '';
+    if (results.length === 0) {
+        html = '<div class="search-no-results">No results found</div>';
+    } else {
+        for (var i = 0; i < Math.min(results.length, 8); i++) {
+            var t = results[i];
+            html += '<div class="search-suggestion-item" onclick="selectTool(\'' + t.id + '\')">';
+            html += '<span class="search-suggestion-icon">' + t.icon + '</span>';
+            html += '<div class="search-suggestion-info">';
+            html += '<div class="search-suggestion-name">' + t.name + '</div>';
+            html += '<div class="search-suggestion-category">' + getCategoryName(t.category) + '</div>';
+            html += '</div></div>';
+        }
+    }
+    
+    suggestionsBox.innerHTML = html;
+    suggestionsBox.classList.add('active');
+}
+
+function selectTool(id) {
+    for (var i = 0; i < tools.length; i++) {
+        if (tools[i].id == id) {
+            window.open(tools[i].url, '_blank');
+            break;
+        }
+    }
+    document.getElementById('searchSuggestions').classList.remove('active');
+    document.getElementById('searchInput').value = '';
+}
+
+function hideSuggestions() {
+    var suggestionsBox = document.getElementById('searchSuggestions');
+    if (suggestionsBox) {
+        setTimeout(function() {
+            suggestionsBox.classList.remove('active');
+        }, 200);
+    }
+}
+
 function getCategoryName(key) {
     for (var i = 0; i < categories.length; i++) {
         if (categories[i].key === key) return categories[i].name;
@@ -273,6 +331,34 @@ function init() {
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
             searchTools(e.target.value);
+            showSuggestions(e.target.value);
+        });
+        
+        searchInput.addEventListener('focus', function(e) {
+            if (e.target.value.length >= 1) {
+                showSuggestions(e.target.value);
+            }
+        });
+        
+        searchInput.addEventListener('blur', function() {
+            hideSuggestions();
+        });
+        
+        // Handle Enter key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchTools(searchInput.value);
+                hideSuggestions();
+            }
+        });
+    }
+    
+    // Search button
+    var searchBtn = document.getElementById('searchBtn');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            searchTools(searchInput.value);
+            hideSuggestions();
         });
     }
     
