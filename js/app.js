@@ -140,7 +140,7 @@ function renderCategories() {
 }
 
 function renderToolCard(tool) {
-    var html = '<div class="tool-card" onclick="openTool(\'' + tool.url + '\')">';
+    var html = '<div class="tool-card" onclick="showToolModal(\'' + tool.id + '\')">';
     html += '<div class="tool-header">';
     html += '<div class="tool-icon">' + tool.icon + '</div>';
     html += '<div class="tool-info">';
@@ -152,9 +152,56 @@ function renderToolCard(tool) {
     html += '</div>';
     html += '<div class="tool-footer">';
     html += '<span class="tool-pricing">' + tool.pricing + '</span>';
-    html += '<span class="tool-link">Visit →</span>';
+    html += '<span class="tool-link">Details →</span>';
     html += '</div></div>';
     return html;
+}
+
+function showToolModal(id) {
+    var tool = null;
+    for (var i = 0; i < tools.length; i++) {
+        if (tools[i].id == id) {
+            tool = tools[i];
+            break;
+        }
+    }
+    
+    if (!tool) return;
+    
+    var modal = document.getElementById('toolModal');
+    var modalBody = document.getElementById('modalBody');
+    
+    var html = '<div class="modal-tool-header">';
+    html += '<div class="tool-icon" style="width:72px;height:72px;font-size:2.5rem;">' + tool.icon + '</div>';
+    html += '<div class="modal-tool-info">';
+    html += '<div class="modal-tool-name">' + tool.name + '</div>';
+    html += '<div class="modal-tool-category">' + getCategoryName(tool.category) + '</div>';
+    html += '</div></div>';
+    html += '<div class="modal-tool-body">';
+    html += '<p class="modal-tool-description">' + tool.description + '</p>';
+    html += '<div class="modal-tool-meta">';
+    html += '<span class="meta-item"><strong>Pricing:</strong> ' + tool.pricing + '</span>';
+    html += '<span class="meta-item"><strong>Category:</strong> ' + getCategoryName(tool.category) + '</span>';
+    html += '</div>';
+    html += '<div class="modal-tool-actions">';
+    html += '<a href="' + tool.url + '" target="_blank" class="modal-btn primary">🚀 Visit Website</a>';
+    html += '</div></div>';
+    
+    modalBody.innerHTML = html;
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    var modal = document.getElementById('toolModal');
+    modal.classList.remove('active');
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    var modal = document.getElementById('toolModal');
+    if (event.target === modal) {
+        closeModal();
+    }
 }
 
 function renderFeatured() {
@@ -368,6 +415,12 @@ function init() {
         btns[i].addEventListener('click', function() {
             filterAndScroll(this.dataset.category);
         });
+    }
+    
+    // Modal close button
+    var closeBtn = document.querySelector('.close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
     }
 }
 

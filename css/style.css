@@ -845,6 +845,7 @@ body {
 .modal-tool-actions {
     display: flex;
     gap: 12px;
+    margin-top: 24px;
 }
 
 .modal-btn {
@@ -857,6 +858,10 @@ body {
     transition: var(--transition);
     text-align: center;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .modal-btn.primary {
@@ -877,6 +882,22 @@ body {
 
 .modal-btn.secondary:hover {
     background: var(--surface-hover);
+}
+
+.modal-tool-meta {
+    display: flex;
+    gap: 24px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+}
+
+.meta-item strong {
+    color: var(--text-primary);
 }
 
 /* Responsive */
