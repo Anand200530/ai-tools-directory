@@ -140,6 +140,7 @@ function renderCategories() {
 }
 
 function renderToolCard(tool) {
+    var shortDesc = tool.description.substring(0, 55) + '...';
     var html = '<div class="tool-card" onclick="showToolModal(\'' + tool.id + '\')">';
     html += '<div class="tool-header">';
     html += '<div class="tool-icon">' + tool.icon + '</div>';
@@ -148,11 +149,11 @@ function renderToolCard(tool) {
     html += '<div class="tool-category">' + getCategoryName(tool.category) + '</div>';
     html += '</div></div>';
     html += '<div class="tool-body">';
-    html += '<p class="tool-description">' + tool.description + '</p>';
+    html += '<p class="tool-description">' + shortDesc + '</p>';
     html += '</div>';
     html += '<div class="tool-footer">';
     html += '<span class="tool-pricing">' + tool.pricing + '</span>';
-    html += '<span class="tool-link">Visit →</span>';
+    html += '<span class="tool-link">Details →</span>';
     html += '</div></div>';
     return html;
 }
