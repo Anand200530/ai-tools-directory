@@ -171,20 +171,54 @@ function showToolModal(id) {
     var modal = document.getElementById('toolModal');
     var modalBody = document.getElementById('modalBody');
     
+    // Get category name
+    var categoryName = getCategoryName(tool.category);
+    
+    // Determine badge color
+    var badgeClass = 'badge-free';
+    if (tool.pricing === 'Paid') badgeClass = 'badge-paid';
+    else if (tool.pricing === 'Freemium') badgeClass = 'badge-freemium';
+    
     var html = '<div class="modal-tool-header">';
-    html += '<div class="tool-icon" style="width:72px;height:72px;font-size:2.5rem;">' + tool.icon + '</div>';
+    html += '<div class="modal-tool-icon">' + tool.icon + '</div>';
     html += '<div class="modal-tool-info">';
     html += '<div class="modal-tool-name">' + tool.name + '</div>';
-    html += '<div class="modal-tool-category">' + getCategoryName(tool.category) + '</div>';
-    html += '</div></div>';
+    html += '<div class="modal-tool-badges">';
+    html += '<span class="badge badge-category">' + categoryName + '</span>';
+    html += '<span class="badge ' + badgeClass + '">' + tool.pricing + '</span>';
+    if (tool.featured) {
+        html += '<span class="badge badge-featured">⭐ Featured</span>';
+    }
+    html += '</div></div></div>';
     html += '<div class="modal-tool-body">';
+    html += '<div class="modal-section">';
+    html += '<h4 class="modal-section-title">About</h4>';
     html += '<p class="modal-tool-description">' + tool.description + '</p>';
-    html += '<div class="modal-tool-meta">';
-    html += '<span class="meta-item"><strong>Pricing:</strong> ' + tool.pricing + '</span>';
-    html += '<span class="meta-item"><strong>Category:</strong> ' + getCategoryName(tool.category) + '</span>';
     html += '</div>';
+    html += '<div class="modal-section">';
+    html += '<h4 class="modal-section-title">Quick Info</h4>';
+    html += '<div class="modal-info-grid">';
+    html += '<div class="modal-info-item">';
+    html += '<span class="info-label">Category</span>';
+    html += '<span class="info-value">' + categoryName + '</span>';
+    html += '</div>';
+    html += '<div class="modal-info-item">';
+    html += '<span class="info-label">Pricing</span>';
+    html += '<span class="info-value">' + tool.pricing + '</span>';
+    html += '</div>';
+    html += '<div class="modal-info-item">';
+    html += '<span class="info-label">Access</span>';
+    html += '<span class="info-value">' + (tool.pricing === 'Free' || tool.pricing === 'Freemium' ? 'Available' : 'Subscription') + '</span>';
+    html += '</div>';
+    html += '<div class="modal-info-item">';
+    html += '<span class="info-label">Platform</span>';
+    html += '<span class="info-value">Web-based</span>';
+    html += '</div>';
+    html += '</div></div>';
     html += '<div class="modal-tool-actions">';
-    html += '<a href="' + tool.url + '" target="_blank" class="modal-btn primary">🚀 Visit Website</a>';
+    html += '<a href="' + tool.url + '" target="_blank" class="modal-btn primary">';
+    html += '<span>🚀</span> Visit Website';
+    html += '</a>';
     html += '</div></div>';
     
     modalBody.innerHTML = html;
