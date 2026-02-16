@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://anand200530.github.io/ai-tools-directory/sitemap.xml
-Host: https://anand200530.github.io/ai-tools-directory/
+Sitemap: https://ai-tools-directory-weld.vercel.app/sitemap.xml
+Host: https://ai-tools-directory-weld.vercel.app
